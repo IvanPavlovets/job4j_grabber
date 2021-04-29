@@ -18,7 +18,7 @@ after_success:
 
 env:
   global:
-  #- CODECOV_TOKEN="1b4f701a-0d56-40c8-8cd5-a3a80dd92e50"
+  - CODECOV_TOKEN="b8077d79-6f34-4b72-ba69-3316a3397aac"
 
 # Отправлять уведомление на почту ivan150287@gmail.com если сборка упала
 notifications:
