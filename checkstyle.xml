@@ -3,19 +3,19 @@
         "-//Puppy Crawl//DTD Check Configuration 1.3//EN"
         "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
 
-<module fileName="Checker">
+<module name="Checker">
 
-    <property fileName="charset" value="UTF-8"/>
+    <property name="charset" value="UTF-8"/>
 
-    <property fileName="fileExtensions" value="java, properties, xml"/>
+    <property name="fileExtensions" value="java, properties, xml"/>
 
     <!-- Checks for Size Violations.                    -->
     <!-- See http://checkstyle.sf.net/config_sizes.html -->
-    <module fileName="FileLength"/>
+    <module name="FileLength"/>
 
-    <module fileName="LineLength">
-        <property fileName="fileExtensions" value="java"/>
-        <property fileName="max" value="100"/>
+    <module name="LineLength">
+        <property name="fileExtensions" value="java"/>
+        <property name="max" value="100"/>
     </module>
     <!-- Checks for Headers                                -->
     <!-- See http://checkstyle.sf.net/config_header.html   -->
@@ -24,89 +24,89 @@
     <!--   <property fileName="fileExtensions" value="java"/> -->
     <!-- </module> -->
 
-    <module fileName="TreeWalker">
+    <module name="TreeWalker">
 
-        <module fileName="DeclarationOrder"/>
+        <module name="DeclarationOrder"/>
 
-        <module fileName="EmptyLineSeparator">
-            <property fileName="tokens" value="
+        <module name="EmptyLineSeparator">
+            <property name="tokens" value="
             CLASS_DEF, ENUM_DEF, INTERFACE_DEF, CTOR_DEF, STATIC_INIT, INSTANCE_INIT, VARIABLE_DEF, METHOD_DEF"/>
-            <property fileName="allowNoEmptyLineBetweenFields" value="true"/>
-            <property fileName="allowMultipleEmptyLines" value="false"/>
-            <property fileName="allowMultipleEmptyLinesInsideClassMembers" value="false"/>
+            <property name="allowNoEmptyLineBetweenFields" value="true"/>
+            <property name="allowMultipleEmptyLines" value="false"/>
+            <property name="allowMultipleEmptyLinesInsideClassMembers" value="false"/>
         </module>
 
-        <module fileName="VisibilityModifier"/>
+        <module name="VisibilityModifier"/>
         <!-- Checks for Naming Conventions.                  -->
         <!-- See http://checkstyle.sf.net/config_naming.html -->
-        <module fileName="ConstantName"/>
+        <module name="ConstantName"/>
         <!--<module fileName="LocalFinalVariableName"/>-->
-        <module fileName="LocalVariableName"/>
-        <module fileName="MemberName"/>
-        <module fileName="MethodName"/>
-        <module fileName="PackageName">
-            <property fileName="format" value="^[a-z]+(\.[a-z0-9]*)*$"/>
+        <module name="LocalVariableName"/>
+        <module name="MemberName"/>
+        <module name="MethodName"/>
+        <module name="PackageName">
+            <property name="format" value="^[a-z]+(\.[a-z0-9]*)*$"/>
         </module>
-        <module fileName="ParameterName"/>
-        <module fileName="StaticVariableName"/>
-        <module fileName="TypeName"/>
+        <module name="ParameterName"/>
+        <module name="StaticVariableName"/>
+        <module name="TypeName"/>
 
         <!-- Checks for Size Violations.                    -->
         <!-- See http://checkstyle.sf.net/config_sizes.html -->
         <!--<module fileName="LineLength"/>-->
-        <module fileName="MethodLength"/>
-        <module fileName="ParameterNumber"/>
+        <module name="MethodLength"/>
+        <module name="ParameterNumber"/>
 
         <!-- Checks for whitespace                               -->
         <!-- See http://checkstyle.sf.net/config_whitespace.html -->
-        <module fileName="EmptyForIteratorPad"/>
-        <module fileName="GenericWhitespace"/>
-        <module fileName="MethodParamPad"/>
-        <module fileName="NoWhitespaceAfter"/>
-        <module fileName="NoWhitespaceBefore"/>
-        <module fileName="OperatorWrap"/>
-        <module fileName="ParenPad"/>
-        <module fileName="TypecastParenPad"/>
-        <module fileName="WhitespaceAfter"/>
-        <module fileName="WhitespaceAround"/>
+        <module name="EmptyForIteratorPad"/>
+        <module name="GenericWhitespace"/>
+        <module name="MethodParamPad"/>
+        <module name="NoWhitespaceAfter"/>
+        <module name="NoWhitespaceBefore"/>
+        <module name="OperatorWrap"/>
+        <module name="ParenPad"/>
+        <module name="TypecastParenPad"/>
+        <module name="WhitespaceAfter"/>
+        <module name="WhitespaceAround"/>
 
         <!-- Modifier Checks                                    -->
         <!-- See http://checkstyle.sf.net/config_modifiers.html -->
 
         <!-- Checks for blocks. You know, those {}'s         -->
         <!-- See http://checkstyle.sf.net/config_blocks.html -->
-        <module fileName="AvoidNestedBlocks"/>
-        <module fileName="EmptyBlock"/>
-        <module fileName="LeftCurly"/>
-        <module fileName="NeedBraces"/>
-        <module fileName="RightCurly"/>
+        <module name="AvoidNestedBlocks"/>
+        <module name="EmptyBlock"/>
+        <module name="LeftCurly"/>
+        <module name="NeedBraces"/>
+        <module name="RightCurly"/>
 
         <!-- Checks for common coding problems               -->
         <!-- See http://checkstyle.sf.net/config_coding.html -->
         <!--<module fileName="AvoidInlineConditionals"/>-->
-        <module fileName="EmptyStatement"/>
-        <module fileName="EqualsHashCode"/>
+        <module name="EmptyStatement"/>
+        <module name="EqualsHashCode"/>
         <!--<module fileName="HiddenField"/>-->
-        <module fileName="IllegalInstantiation"/>
-        <module fileName="InnerAssignment"/>
+        <module name="IllegalInstantiation"/>
+        <module name="InnerAssignment"/>
         <!--<module fileName="MagicNumber"/>-->
-        <module fileName="MissingSwitchDefault"/>
-        <module fileName="SimplifyBooleanExpression"/>
-        <module fileName="SimplifyBooleanReturn"/>
+        <module name="MissingSwitchDefault"/>
+        <module name="SimplifyBooleanExpression"/>
+        <module name="SimplifyBooleanReturn"/>
 
         <!-- Checks for class design                         -->
         <!-- See http://checkstyle.sf.net/config_design.html -->
         <!--<module fileName="DesignForExtension"/>-->
         <!--<module fileName="FinalClass"/>-->
         <!--<module fileName="HideUtilityClassConstructor"/>-->
-        <module fileName="InterfaceIsType"/>
+        <module name="InterfaceIsType"/>
 
         <!-- Miscellaneous other checks.                   -->
         <!-- See http://checkstyle.sf.net/config_misc.html -->
-        <module fileName="ArrayTypeStyle"/>
+        <module name="ArrayTypeStyle"/>
         <!--<module fileName="FinalParameters"/>-->
-        <module fileName="TodoComment"/>
-        <module fileName="UpperEll"/>
+        <module name="TodoComment"/>
+        <module name="UpperEll"/>
 
     </module>
 

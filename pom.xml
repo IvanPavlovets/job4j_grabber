@@ -8,7 +8,7 @@
     <artifactId>job4j_grabber</artifactId>
     <packaging>jar</packaging>
     <version>1.0</version>
-    <fileName>job4j_grabber</fileName>
+    <name>job4j_grabber</name>
     <url>http://job4j.ru/</url>
 
     <properties>
