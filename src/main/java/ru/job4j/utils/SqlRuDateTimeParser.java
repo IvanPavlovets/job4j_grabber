@@ -53,7 +53,10 @@ public class SqlRuDateTimeParser implements DateTimeParser {
             ld = LocalDate.now().minusDays(1);
         } else {
             String[] parts1 = parts[0].split(" ");
-            ld = (LocalDate) LocalDate.of(Integer.parseInt(parts1[2]), MONTH.get(parts1[1]), Integer.parseInt(parts1[0]));
+            ld = (LocalDate) LocalDate.of(
+                    Integer.parseInt(parts1[2]),
+                    MONTH.get(parts1[1]),
+                    Integer.parseInt(parts1[0]));
         }
         return ld.atTime(lt);
     }
