@@ -1,11 +1,13 @@
-package ru.job4j;
+package ru.job4j.html;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import ru.job4j.utils.SqlRuDateTimeParser;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 
 /**
  * Класс парсинга сайта по URL.

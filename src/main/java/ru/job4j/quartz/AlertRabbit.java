@@ -1,4 +1,4 @@
-package ru.job4j;
+package ru.job4j.quartz;
 
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
@@ -61,6 +61,8 @@ public class AlertRabbit {
     /**
      * Внутриний класс задачи, реализующий интерфейс Job.
      * Получаем объекты из context в методе execute().
+     * Timestamp - время в милисекундах (Unix).
+     * Date(stamp.getTime() - принимает милисекунды и конвертирует в дату.
      */
     public static class Rabbit implements Job {
 

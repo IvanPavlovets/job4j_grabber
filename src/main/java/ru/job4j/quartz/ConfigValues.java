@@ -1,4 +1,4 @@
-package ru.job4j;
+package ru.job4j.quartz;
 
 import java.io.InputStream;
 import java.util.Properties;
