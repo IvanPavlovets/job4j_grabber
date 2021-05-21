@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -44,7 +45,7 @@ public class SqlRuDateTimeParser implements DateTimeParser {
     @Override
     public LocalDateTime parse(String parse) {
         String[] parts = parse.split(", ");
-        DateTimeFormatter dTF2 = DateTimeFormatter.ofPattern("HH:mm");
+        DateTimeFormatter dTF2 = DateTimeFormatter.ofPattern("HH:mm", Locale.US);
         LocalTime lt = LocalTime.parse(parts[1], dTF2);
         LocalDate ld;
         if (parts[0].equals("сегодня")) {
