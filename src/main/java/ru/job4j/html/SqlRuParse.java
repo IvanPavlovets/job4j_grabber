@@ -18,15 +18,18 @@ import java.io.IOException;
  */
 public class SqlRuParse {
     public static void main(String[] args) throws IOException {
-        Document doc = Jsoup.connect("https://www.sql.ru/forum/job-offers").get();
-        Elements row = doc.select(".postslisttopic");
-        Elements time = doc.select("td:nth-child(6)");
-        System.out.println("Получено html элементов: " + row.size());
-        for (int i = 0; i < row.size(); i++) {
-            Element href = row.get(i).child(0);
-            System.out.println(href.attr("href"));
-            System.out.println(href.text());
-            System.out.println(time.get(i).text());
+        String resource = "https://www.sql.ru/forum/job-offers";
+        for (int i = 1; i <= 5; i++) {
+            Document doc = Jsoup.connect(resource + "/" + String.valueOf(i)).get();
+            Elements row = doc.select(".postslisttopic");
+            Elements time = doc.select("td:nth-child(6)");
+            System.out.println("Получено html элементов: " + row.size());
+            for (int q = 0; q < row.size(); q++) {
+                Element href = row.get(q).child(0);
+                System.out.println(href.attr("href"));
+                System.out.println(href.text());
+                System.out.println(time.get(q).text());
+            }
         }
     }
 
