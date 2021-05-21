@@ -44,6 +44,7 @@ public class SqlRuDateTimeParser implements DateTimeParser {
      */
     @Override
     public LocalDateTime parse(String parse) {
+        Locale.setDefault(Locale.US);
         String[] parts = parse.split(", ");
         DateTimeFormatter dTF2 = DateTimeFormatter.ofPattern("HH:mm", Locale.US);
         LocalTime lt = LocalTime.parse(parts[1], dTF2);
