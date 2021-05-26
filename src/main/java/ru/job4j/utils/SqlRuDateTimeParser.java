@@ -3,7 +3,6 @@ package ru.job4j.utils;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -46,8 +45,8 @@ public class SqlRuDateTimeParser implements DateTimeParser {
     public LocalDateTime parse(String parse) {
         Locale.setDefault(Locale.US);
         String[] parts = parse.split(", ");
-        DateTimeFormatter dTF2 = DateTimeFormatter.ofPattern("HH:mm", Locale.US);
-        LocalTime lt = LocalTime.parse(parts[1], dTF2);
+        String[] partsTime = parts[1].split(":");
+        LocalTime lt = LocalTime.of(Integer.parseInt(partsTime[0]), Integer.parseInt(partsTime[1]));
         LocalDate ld;
         if (parts[0].equals("сегодня")) {
             ld = LocalDate.now();
