@@ -1,6 +1,6 @@
 package ru.job4j.html;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * Класс объявление на сайте sql.ru
@@ -29,7 +29,7 @@ public class Post {
     /**
      * дата создания поста
      */
-    private Timestamp dateCreation;
+    private LocalDateTime dateCreation;
 
     public String getId() {
         return id;
@@ -63,11 +63,11 @@ public class Post {
         this.textDescription = textDescription;
     }
 
-    public Timestamp getDateCreation() {
+    public LocalDateTime getDateCreation() {
         return dateCreation;
     }
 
-    public void setDateCreation(Timestamp dateCreation) {
+    public void setDateCreation(LocalDateTime dateCreation) {
         this.dateCreation = dateCreation;
     }
 }
