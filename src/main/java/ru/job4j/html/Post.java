@@ -31,6 +31,16 @@ public class Post {
      */
     private LocalDateTime dateCreation;
 
+    public Post() {
+    }
+
+    public Post(String name, String link, String textDescription, LocalDateTime dateCreation) {
+        this.name = name;
+        this.link = link;
+        this.textDescription = textDescription;
+        this.dateCreation = dateCreation;
+    }
+
     public String getId() {
         return id;
     }
