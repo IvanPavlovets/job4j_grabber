@@ -38,7 +38,7 @@ public class SqlRuDateTimeParser implements DateTimeParser {
      * Строковому шаблону каждого месяца соответсвует int значение.
      * Строковые шаблоны "сегодня" и "вчера" - переводяться в часном порядке.
      * DateTimeFormatter - класс задания шаблона для LocalDate и LocalTime.
-     * @param parse
+     * @param parse - строка с датой и временем.
      * @return обьект LocalDateTime
      */
     @Override
