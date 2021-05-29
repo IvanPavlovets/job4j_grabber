@@ -4,6 +4,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import ru.job4j.utils.DateTimeParser;
 import ru.job4j.utils.SqlRuDateTimeParser;
 
 import java.io.IOException;
@@ -22,6 +23,12 @@ import java.util.Map;
  * Element href = td.child(0) - первый элемент.
  */
 public class SqlRuParse implements Parse {
+
+    private DateTimeParser timeParser;
+
+    public SqlRuParse(DateTimeParser parser) {
+        timeParser = parser;
+    }
 
     /**
      * Метод загружает список обьектов,
@@ -60,7 +67,6 @@ public class SqlRuParse implements Parse {
      * @throws IOException
      */
     public Post detail(String link) throws IOException {
-        SqlRuDateTimeParser timeParser = new SqlRuDateTimeParser();
         Document doc = Jsoup.connect(link).get();
         Elements msg = doc.select(".msgTable");
         String msgText = msg.first().select(".msgBody").get(1).text();
@@ -74,11 +80,12 @@ public class SqlRuParse implements Parse {
     }
 
     public static void main(String[] args) throws IOException {
+        SqlRuDateTimeParser timeParser = new SqlRuDateTimeParser();
         String resource = "https://www.sql.ru/forum/job-offers";
-        SqlRuParse parse = new SqlRuParse();
+        SqlRuParse parse = new SqlRuParse(timeParser);
         String link;
         Map<String, Post> postMap = new HashMap<>();
-        for (int i = 1; i <= 5; i++) { // крупные страницы
+        for (int i = 1; i <= 1; i++) { // крупные страницы
             String page = resource + "/" + String.valueOf(i);
             parse.list(page);
         }
