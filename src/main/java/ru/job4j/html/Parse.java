@@ -1,8 +1,13 @@
 package ru.job4j.html;
 
+import ru.job4j.model.Post;
+
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Интерфейс извлечение данных с сайта.
+ */
 public interface Parse {
     /**
      * Метод загружает список обьектов,
