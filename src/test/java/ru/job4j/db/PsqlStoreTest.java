@@ -51,6 +51,7 @@ public class PsqlStoreTest {
             Post post1 = new Post("javaPost", "link", "desc", LocalDateTime.now());
             store.save(post1);
             Post post2 = store.findById(post1.getId());
+            assertThat(store.findById(post1.getId()).getName(), is("javaPost"));
             assertEquals(post1.getName(), post2.getName());
             assertEquals(post1.getLink(), post2.getLink());
             assertEquals(post1.getTextDescription(), post2.getTextDescription());

@@ -98,6 +98,11 @@ public class PsqlStore implements Store, AutoCloseable {
         return result;
     }
 
+    /**
+     * метод возвращает обьявление по id.
+     * @param id
+     * @return обьект Post
+     */
     @Override
     public Post findById(String id) {
         Post result = null;
