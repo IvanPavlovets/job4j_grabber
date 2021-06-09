@@ -13,14 +13,20 @@ public interface Parse {
      * Метод загружает список обьектов,
      * всех постов - обьявлений.
      * @param link
-     * @return
+     * @return список всех постов на 5 страницах  List<Post>.
      */
     List<Post> list(String link);
 
     /**
      * Загружает детали одного поста - обьявления.
      * @param link
-     * @return
+     * @return Post
      */
     Post detail(String link) throws IOException;
+
+    /**
+     * Загружает список страниц ресурса для парсинга.
+     * @return List<String>
+     */
+    List<String> pages();
 }

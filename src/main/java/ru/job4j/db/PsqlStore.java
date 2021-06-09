@@ -26,7 +26,7 @@ public class PsqlStore implements Store, AutoCloseable {
      */
     public PsqlStore(ConfigValues config) {
         this.config = config;
-        initConnection();
+        this.cn = initConnection();
     }
 
     public PsqlStore(Connection cn) {

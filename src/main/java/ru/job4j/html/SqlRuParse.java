@@ -25,6 +25,10 @@ import java.util.Map;
  */
 public class SqlRuParse implements Parse {
 
+    private static final String RESOURCE = "https://www.sql.ru/forum/job-offers";
+    private static final String JAVA = "java";
+    private static final String JAVAS = "javas";
+
     private DateTimeParser timeParser;
 
     public SqlRuParse(DateTimeParser parser) {
@@ -32,8 +36,8 @@ public class SqlRuParse implements Parse {
     }
 
     /**
-     * Метод загружает список обьектов,
-     * всех постов - обьявлений.
+     * Метод записывает в список обьекты обьявлений,
+     * по критерию selection().
      *
      * @param link url одной страницы - https://www.sql.ru/forum/job-offers/1
      * @return список всех постов на 5 страницах.
@@ -45,17 +49,44 @@ public class SqlRuParse implements Parse {
         try {
             doc = Jsoup.connect(link).get();
             Elements posts = doc.select(".postslisttopic");
-            System.out.println("Получено строк с обьявлениями: " + posts.size());
             for (Element row : posts) {
                 Element href = row.child(0);
                 link = href.attr("href");
-                postList.add(this.detail(link));
+                Post post = this.detail(link);
+                if (!(selection(post.getName())) || !(selection(post.getTextDescription()))) {
+                    continue;
+                }
+                postList.add(post);
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
         return postList;
+    }
+
+    /**
+     * Внутрений метод проверки строки по критерию, необходим для
+     * выбор тех обьектов в описании или заглавии которых
+     * содержиться искомое совпадение слов "Java".
+     *
+     * @param testStr
+     * @return boolean по результату проверки на "Java"
+     * @throws IOException
+     */
+    public boolean selection(String testStr) throws IOException {
+        boolean result = false;
+        //String name = "Вакансия Full stack (NodeJS and ReactJS), javaScript  полная занятость , 1800-4500$ [new]";//post.getName().toLowerCase();
+        testStr = testStr.toLowerCase();
+        if (testStr.contains(JAVAS)) {
+            testStr = testStr.replaceAll(JAVAS, "");
+            if (testStr.contains(JAVA)) {
+                result = true;
+            }
+        } else if (testStr.contains(JAVA)) {
+            result = true;
+        }
+        return result;
     }
 
     /**
@@ -74,22 +105,35 @@ public class SqlRuParse implements Parse {
         String msgHeader = msg.first().select(".messageHeader").text();
         String date = msg.last().select(".msgFooter").text();
         date = date.substring(0, date.indexOf(" ["));
-        System.out.println("1 link: " + link);
-        System.out.println("2 msgHeader: " + msgHeader);
-        System.out.println("3 date: " + date);
         return new Post(msgHeader, link, msgText, timeParser.parse(date));
+    }
+
+    /**
+     * Метод получает список из нескольких страниц интеренет ресурса.
+     *
+     * @return List<String>
+     */
+    public List<String> pages() {
+        List<String> result = new ArrayList<>();
+        String page;
+        for (int i = 1; i <= 5; i++) { // крупные страницы
+            page = RESOURCE + "/" + String.valueOf(i);
+            result.add(page);
+        }
+        return result;
     }
 
     public static void main(String[] args) throws IOException {
         SqlRuDateTimeParser timeParser = new SqlRuDateTimeParser();
-        String resource = "https://www.sql.ru/forum/job-offers";
+//
         SqlRuParse parse = new SqlRuParse(timeParser);
-        String link;
-        Map<String, Post> postMap = new HashMap<>();
-        for (int i = 1; i <= 1; i++) { // крупные страницы
-            String page = resource + "/" + String.valueOf(i);
-            parse.list(page);
-        }
+//        for (int i = 1; i <= 5; i++) { // крупные страницы
+//            String page = RESOURCE + "/" + String.valueOf(i);
+//            parse.list(page);
+//        }
+        //System.out.println(parse.selection());
+
+
     }
 
 }
