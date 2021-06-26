@@ -11,10 +11,10 @@ import ru.job4j.utils.ConfigValues;
 import ru.job4j.utils.DateTimeParser;
 import ru.job4j.utils.SqlRuDateTimeParser;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.Properties;
-import java.util.stream.Collectors;
 
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
@@ -31,6 +31,13 @@ public class Grabber implements Grab {
      * утилита преобразования даты времени.
      */
     private DateTimeParser sqlRuTimeParser;
+
+    private long startTime;
+    private long endTime;
+
+    public Grabber() {
+        startTime = new Date().getTime();
+    }
 
     /**
      * метод получения PsqlStore,
@@ -105,8 +112,11 @@ public class Grabber implements Grab {
                 .withSchedule(times)
                 .build();
         scheduler.scheduleJob(job, trigger);
+        endTime = new Date().getTime();
+        long difference = endTime - startTime;
+        System.out.println("Прошедшее время в миллисекундах: " + difference);
         try {
-            Thread.sleep(5000);
+            Thread.sleep(9000);
             scheduler.shutdown();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -120,6 +130,11 @@ public class Grabber implements Grab {
      * по очереди извлекаються списки отпарсеных
      * обьявлений и передаються на запись в БД
      * во внутренем цикле.
+     * v 1.2
+     * Достать дату самой свежей вакансии из бд
+     * и парсить только до тех пор пока есть
+     * вакансии свежее этой. Вакансии подаються
+     * с конца, с 5 по 1 страницу форума sql.ru.
      */
     public static class GrabJob implements Job {
         @Override
@@ -127,17 +142,14 @@ public class Grabber implements Grab {
             JobDataMap map = context.getJobDetail().getJobDataMap();
             Store store = (Store) map.get("store");
             Parse parse = (Parse) map.get("parse");
-            List<Post> posts; // все посты кладем в список
+
+            LocalDateTime lastDate = store.getLastDate();
+            List<Post> posts = new ArrayList<>(); // все посты кладем в список
             for (String page : parse.pages()) {
-                posts = parse.list(page);
-                for (Post post : posts) { // выборка обьявлений
-                    if (posts.isEmpty()) { // должно быть Условие записи в БД
-                        break;
-                    }
-                    store.save(post);
-                    System.out.println("save!");
-                }
+                posts.addAll(parse.list(page, lastDate));
             }
+            store.saveAll(posts);
+            posts.clear();
         }
     }
 

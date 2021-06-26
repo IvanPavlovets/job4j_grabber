@@ -12,9 +12,12 @@ public class SqlRuParseTest {
 
     @Test
     public void whenGetSelection() {
-        String javas = "Вакансия Full stack JavaScript (NodeJS and ReactJS),  полная занятость , 1800-4500$ [new]";
-        String java1 = "Вакансия Full stack Java (NodeJS and ReactJS),  полная занятость , 1800-4500$ [new]";
-        String java2 = "Вакансия Full stack JavaScript Java (NodeJS and ReactJS),  полная занятость , 1800-4500$ [new]";
+        String javas = "Вакансия Full stack JavaScript (NodeJS and ReactJS),"
+                        + "  полная занятость , 1800-4500$ [new]";
+        String java1 = "Вакансия Full stack Java (NodeJS and ReactJS),"
+                        + "  полная занятость , 1800-4500$ [new]";
+        String java2 = "Вакансия Full stack JavaScript Java (NodeJS and ReactJS),"
+                + " полная занятость , 1800-4500$ [new]";
         SqlRuDateTimeParser timeParser = new SqlRuDateTimeParser();
         SqlRuParse parse = new SqlRuParse(timeParser);
         try {

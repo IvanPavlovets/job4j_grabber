@@ -4,15 +4,15 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.job4j.model.Post;
 import ru.job4j.utils.DateTimeParser;
-import ru.job4j.utils.SqlRuDateTimeParser;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Класс парсинга сайта по URL.
@@ -29,6 +29,8 @@ public class SqlRuParse implements Parse {
     private static final String JAVA = "java";
     private static final String JAVAS = "javas";
 
+    private static final Logger LOG = LoggerFactory.getLogger(SqlRuParse.class.getName());
+
     private DateTimeParser timeParser;
 
     public SqlRuParse(DateTimeParser parser) {
@@ -38,25 +40,41 @@ public class SqlRuParse implements Parse {
     /**
      * Метод записывает в список обьекты обьявлений,
      * по критерию selection().
+     * v 1.2
+     * вакансии парсяться церез обратный цикл,
+     * начиная от самой "старой", за посление 6 месяцев.
+     * Url страниц тоже  подаеться в обратном порядке.
      *
      * @param link url одной страницы - https://www.sql.ru/forum/job-offers/1
+     * @param
      * @return список всех постов на 5 страницах.
      */
     @Override
-    public List<Post> list(String link) {
+    public List<Post> list(String link, LocalDateTime lastDate) {
         List<Post> postList = new ArrayList<>();
+        postList.clear();
         Document doc = null;
         try {
             doc = Jsoup.connect(link).get();
             Elements posts = doc.select(".postslisttopic");
-            for (Element row : posts) {
-                Element href = row.child(0);
+            for (int i = posts.size() - 1; i >= 0; i--) {
+                Element href = posts.get(i).child(0);
                 link = href.attr("href");
-                Post post = this.detail(link);
-                if (!(selection(post.getName())) || !(selection(post.getTextDescription()))) {
+                doc = Jsoup.connect(link).get();
+                Elements msg = doc.select(".msgTable");
+                String msgText = msg.first().select(".msgBody").get(1).text();
+                String msgHeader = msg.first().select(".messageHeader").text();
+                if (!(selection(msgHeader)) || !(selection(msgText))) {
                     continue;
                 }
-                postList.add(post);
+                String rawDate = msg.first().select(".msgFooter").text();
+                rawDate = rawDate.substring(0, rawDate.indexOf(" ["));
+                LocalDateTime date = timeParser.parse(rawDate);
+                if (date.isAfter(lastDate)) {
+                    LOG.debug("{} - Дата подходит!", date);
+                    Post post = new Post(msgHeader, link, msgText, date);
+                    postList.add(post);
+                }
             }
 
         } catch (IOException e) {
@@ -76,7 +94,6 @@ public class SqlRuParse implements Parse {
      */
     public boolean selection(String testStr) throws IOException {
         boolean result = false;
-        //String name = "Вакансия Full stack (NodeJS and ReactJS), javaScript  полная занятость , 1800-4500$ [new]";//post.getName().toLowerCase();
         testStr = testStr.toLowerCase();
         if (testStr.contains(JAVAS)) {
             testStr = testStr.replaceAll(JAVAS, "");
@@ -110,30 +127,20 @@ public class SqlRuParse implements Parse {
 
     /**
      * Метод получает список из нескольких страниц интеренет ресурса.
+     * v 1.2
+     * Url страниц подаються в обратном порядке,
+     * что бы чтение начиналось с самой последней вакансии.
      *
      * @return List<String>
      */
     public List<String> pages() {
         List<String> result = new ArrayList<>();
+        result.clear();
         String page;
-        for (int i = 1; i <= 5; i++) { // крупные страницы
+        for (int i = 5; i >= 1; i--) { // крупные страницы
             page = RESOURCE + "/" + String.valueOf(i);
             result.add(page);
         }
         return result;
     }
-
-    public static void main(String[] args) throws IOException {
-        SqlRuDateTimeParser timeParser = new SqlRuDateTimeParser();
-//
-        SqlRuParse parse = new SqlRuParse(timeParser);
-//        for (int i = 1; i <= 5; i++) { // крупные страницы
-//            String page = RESOURCE + "/" + String.valueOf(i);
-//            parse.list(page);
-//        }
-        //System.out.println(parse.selection());
-
-
-    }
-
 }
