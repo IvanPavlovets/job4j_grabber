@@ -11,6 +11,11 @@ import ru.job4j.utils.ConfigValues;
 import ru.job4j.utils.DateTimeParser;
 import ru.job4j.utils.SqlRuDateTimeParser;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -124,6 +129,36 @@ public class Grabber implements Grab {
     }
 
     /**
+     * Метод общения сервера с клиентами по TCP/IP
+     * запуск сервера (ServerSocket), указать порт,
+     * клиент (Socket) через свой сокет прослушивает сервер
+     * - server.accept(), в режиме ожидания.
+     * Запись ответного сообшения клиенту (браузер) через
+     * выходной поток - out.write
+     * @param store
+     */
+    public void web(Store store) {
+        new Thread(() -> {
+            try (ServerSocket server = new ServerSocket(Integer.parseInt(cfg.get("port")))) {
+                while (!server.isClosed()) {
+                    Socket socket = server.accept();
+                    try (OutputStream out = socket.getOutputStream()) {
+                        out.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
+                        for (Post post : store.getAll()) {
+                            out.write(post.toString().getBytes(Charset.forName("Windows-1251")));
+                            out.write(System.lineSeparator().getBytes());
+                        }
+                    } catch (IOException io) {
+                        io.printStackTrace();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    /**
      * Внутриний класс задания. В методе execute()
      * получаем переданые обьекты через context.
      * В цикле перебора url-ов интерент страниц
@@ -160,5 +195,6 @@ public class Grabber implements Grab {
         Store store = grab.store();
         Parse parse = grab.parse();
         grab.init(parse, store, scheduler);
+        grab.web(store);
     }
 }

@@ -101,8 +101,6 @@ public class Post {
 
     @Override
     public String toString() {
-        return "Post{"
-                + "name='" + name + '\''
-                + ", dateCreation=" + dateCreation + '}';
+        return String.format("vacancy: %s, date: %s\r\nlink: %s", name, dateCreation, link);
     }
 }
