@@ -8,17 +8,10 @@ sudo: false
 services:
 - postgresql
 
-before_install:
-- psql -c 'create database tracker;' -U postgres
-
 # после выполнения сборки запустить скрипт, который будет собирать статистику по JaCoCo
 # Здесь используется сторонни сервис https://codecov.io/
 after_success:
 - bash <(curl -s https://codecov.io/bash)
-
-env:
-  global:
-  - CODECOV_TOKEN="b8077d79-6f34-4b72-ba69-3316a3397aac"
 
 # Отправлять уведомление на почту ivan150287@gmail.com если сборка упала
 notifications:
@@ -27,3 +20,9 @@ notifications:
     - ivan150287@gmail.com
     on_success: never # default: change
     on_failure: always # default: always
+
+env:
+
+  global:
+
+  - CODECOV_TOKEN="b8077d79-6f34-4b72-ba69-3316a3397aac"
